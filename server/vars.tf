@@ -2,6 +2,10 @@ variable "zone" {
   type = string
 }
 
+variable "region" {
+  type = string
+}
+
 variable "floatingip_address" {
   type = string
 }
@@ -42,10 +46,6 @@ variable "image_name" {
 variable "volume_type" {
   type    = string
   default = "universal.ru-7a"
-}
-
-variable "keypair_name" {
-  type = string
 }
 
 variable "preemptible_tag" {

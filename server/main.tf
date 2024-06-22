@@ -16,11 +16,17 @@ module "image" {
   name   = var.image_name
 }
 
+module "key_pair" {
+  source = "./key_pair"
+  region = var.region
+}
+
 resource "openstack_blockstorage_volume_v3" "volume" {
   name              = "volume-for-${random_string.server_name.result}"
   size              = var.root_disk_gb
   image_id          = module.image.id
   volume_type       = var.volume_type
+  region            = var.region
   availability_zone = var.zone
 
   lifecycle {
@@ -40,7 +46,7 @@ resource "openstack_networking_port_v2" "port" {
 resource "openstack_compute_instance_v2" "instance" {
   name              = random_string.server_name.result
   flavor_id         = module.flavor.id
-  key_pair          = var.keypair_name
+  key_pair          = module.key_pair.id
   availability_zone = var.zone
 
   network {

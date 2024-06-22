@@ -4,54 +4,33 @@ provider "selectel" {
   domain_name = var.domain_name
 }
 
-resource "random_string" "project_name" {
-  length  = 5
-  upper   = false
-  special = false
-}
-
-module "project" {
-  source       = "./project"
-  project_name = random_string.project_name.result
-  region       = var.region
-  zone         = var.zone
-}
-
-module "serviceuser" {
-  source     = "./serviceuser"
-  project_id = module.project.id
-}
-
 provider "openstack" {
-  auth_url    = var.auth_url
-  domain_name = var.domain_name
-  tenant_id   = module.project.id
-  user_name   = module.serviceuser.username
-  password    = module.serviceuser.password
-  region      = var.region
+  auth_url            = var.auth_url
+  project_domain_name = var.domain_name
+  user_domain_name    = var.domain_name
+  tenant_id           = var.project_id
+  user_name           = var.username
+  password            = var.password
+  region              = var.region
+  max_retries         = 5
 }
 
 module "floatingip" {
   source     = "./floatingip"
-  project_id = module.project.id
+  project_id = var.project_id
   region     = var.region
 }
 
 module "nat" {
   source = "./nat"
-
-  depends_on = [
-    module.project,
-    module.serviceuser,
-  ]
 }
 
 module "server" {
   source             = "./server"
   floatingip_address = module.floatingip.address
-  keypair_name       = module.serviceuser.keypair_name
   network_id         = module.nat.network_id
   subnet_id          = module.nat.subnet_id
+  region             = var.region
   zone               = var.zone
 }
 

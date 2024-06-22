@@ -1,8 +1,25 @@
-variable "username" {}
+variable "user_id" {
+  type        = string
+  description = "Service user ID"
+}
 
-variable "password" {}
+variable "username" {
+  type = string
+}
 
-variable "domain_name" {}
+variable "password" {
+  type = string
+}
+
+variable "domain_name" {
+  type        = string
+  description = "Selectel account ID"
+}
+
+variable "project_id" {
+  type        = string
+  description = "The project ID"
+}
 
 variable "auth_url" {
   default = "https://cloud.api.selcloud.ru/identity/v3"
