@@ -16,11 +16,6 @@ variable "domain_name" {
   description = "Selectel account ID"
 }
 
-variable "project_id" {
-  type        = string
-  description = "The project ID"
-}
-
 variable "auth_url" {
   default = "https://cloud.api.selcloud.ru/identity/v3"
 }

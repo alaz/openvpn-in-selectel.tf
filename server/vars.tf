@@ -30,7 +30,7 @@ variable "ram_mb" {
 
 variable "root_disk_gb" {
   type    = number
-  default = 5 * 1024
+  default = 5
 }
 
 variable "local_disk_gb" {

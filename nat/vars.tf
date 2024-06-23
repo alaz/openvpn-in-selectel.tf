@@ -1,3 +1,11 @@
+variable "region" {
+  type = string
+}
+
+variable "zone" {
+  type = string
+}
+
 variable "router_external_net_name" {
   default = "external-network"
 }
